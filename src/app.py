@@ -31,9 +31,9 @@ df_song = df['Artist']
 #Creating a histogram using plotly to show the artists in the database
 #Each graph from here has update_layout method to change the layout of the graph.
 
-fig3 = px.histogram(df_song, y ='Artist',title = 'Number of Songs Artists have in this database'.upper(), color = 'Artist', color_discrete_sequence=px.colors.qualitative.Bold)
+fig3 = px.histogram(df_song, y ='Artist',title = 'Artists & their song count'.upper(), color = 'Artist', color_discrete_sequence=px.colors.qualitative.Bold)
 
-fig3.update_layout(margin=dict(l=20, r=40, t=40, b=40), paper_bgcolor= '#e2e8f0', font_color="black",plot_bgcolor="#e2e8f0",height=1000)
+fig3.update_layout(margin=dict(l=20, r=40, t=40, b=40), paper_bgcolor= '#e2e8f0', font_color="black",plot_bgcolor="#e2e8f0",height=1000,showlegend=False)
 
 fig3.update_yaxes(color='black',autorange = 'reversed',showticklabels= False,showgrid = False)
 
@@ -42,9 +42,9 @@ fig3.update_yaxes(color='black',autorange = 'reversed',showticklabels= False,sho
 
 dff = df[['song_size_Mb','Genre']]
 
-fig = px.pie(dff,values ='song_size_Mb', names ='Genre', title = 'Pie chart of Genres present'.upper(),color_discrete_sequence=px.colors.qualitative.Bold)
+fig = px.pie(dff,values ='song_size_Mb', names ='Genre', title = 'Genres Present'.upper(),color_discrete_sequence=px.colors.qualitative.Bold)
 
-fig.update_layout(margin=dict(l=40, r=20, t=40, b=20),paper_bgcolor= '#e2e8f0',font_color="black",legend_title_text="Genre",showlegend=True)
+fig.update_layout(margin=dict(l=40, r=20, t=40, b=20),paper_bgcolor= '#e2e8f0',font_color="black",legend_title_text="Genre",showlegend=False)
 
 fig.update_traces(dict(marker_line_width=0))
 
@@ -53,7 +53,7 @@ fig.update_traces(dict(marker_line_width=0))
 
 dff2 = df[['Song_Track','Total_runtime_min','song_size_Mb']]
 
-fig2 = px.scatter(dff2, x= 'song_size_Mb',y = 'Total_runtime_min', color= 'Song_Track', title = 'Total runtime of each song'.upper(),color_discrete_sequence=px.colors.qualitative.Prism)
+fig2 = px.scatter(dff2, x= 'song_size_Mb',y = 'Total_runtime_min', color= 'Song_Track', title = 'Runtime of a song'.upper(),color_discrete_sequence=px.colors.qualitative.Prism)
 
 fig2.update_layout(margin=dict(l=10, r=10, t=40, b=30), paper_bgcolor= '#e2e8f0',font_color="black",plot_bgcolor="#e2e8f0",showlegend = False) #xaxis={"categoryorder":"total descending"})
 
@@ -98,13 +98,13 @@ app.layout = html.Div(
             html.Div(children=[
               html.Span(mean_size, className="text-5xl text-center my-2 font-bold"),
               html.Span("Average Size of a Song in megabytes", className="text-lg fontmedium ml-1 text-center"),
-         ],className=" flex flex-col justify-center p-4 text-white itemscenter rounded-md bg-[#030712]")],className="flex flex-row justify-center w-auto m-2 space-x-24 bg-[#e7ecef]"),
+         ],className=" flex flex-col justify-center p-4 text-white itemscenter rounded-md bg-[#030712]")],className="flex flex-col justify-center space-y-4 w-auto m-2 md:space-x-12 md:flex-row md:justify-center bg-[#e7ecef]"),
             
         html.Div([
               html.Div(dcc.Graph(id='genre_graph',figure = fig),className="shadow-md rounded-md shadow-md"),
               html.Div(dcc.Graph(id = 'runtime_graph', figure = fig2),className="shadow-md rounded-md shadow-md"),
-              html.Div(dcc.Graph(figure=fig3),className="shadow-md col-span-2 rounded-md shadow-md"),
-                        ],className="grid grid-cols-2 grid-row-2 rounded-md  gap-2 m-2 px-4 py-8 bg-[#e7ecef]"),
+              html.Div(dcc.Graph(figure=fig3),className="shadow-md md:col-span-2 rounded-md shadow-md"),
+                        ],className="grid grid-cols-1 rounded-md gap-2 m-2 px-4 py-8 bg-[#e7ecef] md:grid-cols-2 md:grid-row-2"),
     
        html.Div([
          html.Div([
@@ -119,8 +119,8 @@ app.layout = html.Div(
         
            html.Div([
              html.P("Select an Artist",className="flex flex-col p-4 justify-center text-black itemscenter rounded-sm w-full bg-[#f1f5f9]"),
-             dcc.Dropdown(options = df['Artist'].unique(), value = 'Artist',id = 'Artist')],className='shadow-md col-span-2 p-4 justify-center text-black itemscenter rounded-md w-full bg-[#f1f5f9] shadow-md'
-           )],className="grid grid-cols-2 grid-row-3 gap-2 p-2 space-y-2 justify-center text-black itemscenter rounded-md"),
+             dcc.Dropdown(options = df['Artist'].unique(), value = 'Artist',id = 'Artist')],className='shadow-md p-4 justify-center text-black itemscenter rounded-md w-full bg-[#f1f5f9] md:col-span-2 shadow-md'
+           )],className="grid grid-cols-1 gap-2 p-2 space-y-2 justify-center text-black itemscenter rounded-md md:grid-cols-2 md:grid-rows-2"),
             
          html.Div([
            html.P("What did you select? Choose from the menus above!",className = "shadow-md flex p-2 font-semibold italic justify-center text-center bg-[#cbd5e1] shadow-md"),
@@ -156,4 +156,3 @@ def exploremusic(t):
 
 if __name__ == "__main__":
      app.run_server()
-
